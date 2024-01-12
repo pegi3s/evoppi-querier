@@ -62,8 +62,9 @@ def json_results_to_csv_multiple(json_interactions: List, interactomes: List):
                 None,
             )
 
-            row_data[interactomes_mapping[unique_id]] = degree
-            rows.append(row_data)
+            if not degree is None:
+                row_data[interactomes_mapping[unique_id]] = degree
+                rows.append(row_data)
 
         datasets.append((columns, rows))
 

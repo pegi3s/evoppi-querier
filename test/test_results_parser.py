@@ -155,9 +155,9 @@ class TestResultsParser(unittest.TestCase):
             ['geneA', 'geneAName', 'geneB', 'geneBName', 'HIPPIE'] # 629
         ]
         expected_rows = [
-            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'Based on Drosophila melanogaster BioGRID (ENSEMBL)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'Based on Drosophila melanogaster BioGRID (ENSEMBL)': None}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'Based on Drosophila melanogaster BioGRID (ENSEMBL)': None}],
-            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': None}],
-            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'HIPPIE': None}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'HIPPIE': None}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'HIPPIE': 1}]
+            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'Based on Drosophila melanogaster BioGRID (ENSEMBL)': 1}],
+            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}],
+            [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'HIPPIE': 1}]
         ]
 
         interactions = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactions']['interactions']
