@@ -128,13 +128,17 @@ class TestResultsParser(unittest.TestCase):
             {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'HIPPIE': 1}
         ]
 
-        columns_simple, rows_simple = json_results_to_csv_simple(self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE)
+        interactions = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactions']['interactions']
+        interactomes = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactomes']
+        columns_simple, rows_simple = json_results_to_csv_simple(interactions, interactomes)
         
         self.assertListEqual(expected_columns, columns_simple)
         self.assertListEqual(expected_rows, rows_simple)
 
     def test_json_results_to_csv_simple_write_file(self):
-        columns, rows = json_results_to_csv_simple(self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE)
+        interactions = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactions']['interactions']
+        interactomes = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactomes']
+        columns, rows = json_results_to_csv_simple(interactions, interactomes)
 
         with tempfile.NamedTemporaryFile(delete=False, mode='w+') as tmp_file:
             write_interactions_to_csv(columns, rows, tmp_file.name)
@@ -155,7 +159,10 @@ class TestResultsParser(unittest.TestCase):
             [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': 1}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'Based on Drosophila melanogaster BioGRID (DIOPT)': None}],
             [{'geneA': 411, 'geneAName': 'ARSB', 'geneB': 79613, 'geneBName': 'CCDS45516.1', 'HIPPIE': None}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 645121, 'geneBName': 'CCDS34236.1', 'HIPPIE': None}, {'geneA': 411, 'geneAName': 'ARSB', 'geneB': 728358, 'geneBName': 'CCDS43691.1', 'HIPPIE': 1}]
         ]
-        datasets_multiple = json_results_to_csv_multiple(self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE)
+
+        interactions = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactions']['interactions']
+        interactomes = self.EVOPPI_SAME_SPECIES_JSON_RESULTS_RESPONSE['interactomes']
+        datasets_multiple = json_results_to_csv_multiple(interactions, interactomes)
         self.assertEqual(3, len(datasets_multiple))
 
         for index, dataset in enumerate(datasets_multiple, start=0):

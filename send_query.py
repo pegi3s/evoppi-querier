@@ -2,9 +2,9 @@ import requests
 import time
 import json
 
-from core.config import SameSpeciesConfigLoader
+from core.config import SameSpeciesConfigLoader, Format
 from core.config_mapper import SameSpeciesConfigMapper
-from core.results_parser import write_interactions_to_csv
+from core.results_parser import json_results_to_csv
 
 def send_get_request(url, params=None):
     try:
@@ -26,25 +26,22 @@ def process_completed(response_json, result_reference_url):
     total_interactions = response_json.get('totalInteractions', 0)
     print(f"Total Interactions: {total_interactions}")
 
-    # Print the initial JSON response
-    print("Initial JSON Response:")
-    print(json.dumps(response_json, indent=2))
-
     # Iterate over pages to retrieve all entries
-    interactions = []
+    responses = []
     for page in range(1, (total_interactions // 10) + 1):
         page_url = f"{result_reference_url}?page={page}&pageSize=10"
         page_response = send_get_request(page_url)
         if page_response:
-            print(f"\nPage {page} JSON Response:")
-            print(json.dumps(page_response, indent=2))
-            interactions.extend(page_response['interactions']['interactions'])
+            # print(f"\nPage {page} JSON Response:")
+            # print(json.dumps(page_response, indent=2))
+            responses.append(page_response)
         else:
             print(f"\nFailed to retrieve data for page {page}")
 
     print("Process completed successfully.")
-    print(f'Got {len(interactions)} interactions')
-    write_interactions_to_csv(interactions, 'query.csv')
+    print(f'Got {len(responses)} page responses')
+    # json_results_to_csv(responses, Format.SINGLE, 'query.csv')
+    json_results_to_csv(responses, Format.MULTIPLE, '/tmp/results')
 
 def check_status(result_reference_url):
     while True:
@@ -55,7 +52,6 @@ def check_status(result_reference_url):
                 print(f"Current status: {status}")
 
                 if status == "COMPLETED":
-                    process_completed(response_json, result_reference_url)
                     break
                 elif status == "FAILED":
                     print("Process failed. JSON Response:")
@@ -69,6 +65,8 @@ def check_status(result_reference_url):
             print(f"An error occurred while checking status: {e}")
 
         time.sleep(5)  # Wait for 5 seconds before checking again
+    
+    return status, response_json
 
 if __name__ == "__main__":
     initial_api_url = "http://evoppi.i3s.up.pt/evoppi-backend/rest/api/interaction"
@@ -110,6 +108,9 @@ if __name__ == "__main__":
                 print(f"Result Reference: {result_reference}")
 
                 # Check status
-                check_status(result_reference)
+                final_status, latest_response_json = check_status(result_reference)
     except Exception as e:
         print(f"An error occurred: {e}")
+
+    if final_status == 'COMPLETED':
+        process_completed(latest_response_json, result_reference)

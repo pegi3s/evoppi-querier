@@ -1,6 +1,9 @@
 import csv
+import os
 
 from typing import List, Set, Dict
+
+from core.config import Format
 
 def extract_unique_ids(json_interactions: List) -> Set:
     unique_ids = set()
@@ -13,10 +16,9 @@ def extract_unique_ids(json_interactions: List) -> Set:
 def get_interactomes_mapping(interactomes: List) -> Dict:
     return {i['id']:i['name'] for i in interactomes}
 
-def json_results_to_csv_simple(same_species_response: Dict):
-    json_interactions = same_species_response['interactions']['interactions']
-    interactomes_mapping = get_interactomes_mapping(same_species_response['interactomes'])
+def json_results_to_csv_simple(json_interactions: List, interactomes: List):
     unique_ids = extract_unique_ids(json_interactions)
+    interactomes_mapping = get_interactomes_mapping(interactomes)
 
     columns = ["geneA", "geneAName", "geneB", "geneBName"] + [interactomes_mapping[id] for id in unique_ids]
     rows = []
@@ -37,10 +39,9 @@ def json_results_to_csv_simple(same_species_response: Dict):
 
     return columns, rows
 
-def json_results_to_csv_multiple(same_species_response: Dict):
-    json_interactions = same_species_response['interactions']['interactions']
-    interactomes_mapping = get_interactomes_mapping(same_species_response['interactomes'])
+def json_results_to_csv_multiple(json_interactions: List, interactomes: List):
     unique_ids = extract_unique_ids(json_interactions)
+    interactomes_mapping = get_interactomes_mapping(interactomes)
 
     datasets = []
 
@@ -75,3 +76,23 @@ def write_interactions_to_csv(csv_columns: List, rows: List, csv_file_path: str)
 
         for row_data in rows:
             writer.writerow(row_data)
+
+def json_results_to_csv(evoppi_responses: List, output_format: Format, output_path: str):
+    interactions = []
+    interactomes = evoppi_responses[0]['interactomes']
+
+    for same_species_response in evoppi_responses:
+        interactions.extend(same_species_response['interactions']['interactions'])
+
+    if output_format is Format.SINGLE:
+        columns, rows = json_results_to_csv_simple(interactions, interactomes)
+        write_interactions_to_csv(columns, rows, output_path)
+    elif output_format is Format.MULTIPLE:
+        datasets_multiple = json_results_to_csv_multiple(interactions, interactomes)
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        for columns, rows in datasets_multiple:
+            interactome_file_name = str(columns[len(columns)-1]).replace(' ', '_')
+            write_interactions_to_csv(columns, rows, f'{output_path}/{interactome_file_name}.csv')
+    
