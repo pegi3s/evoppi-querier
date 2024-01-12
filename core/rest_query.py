@@ -67,3 +67,29 @@ def create_species_map():
         print(f"Request failed: {e}")
 
     return species_map
+
+def get_all_maps():
+    stats_data = get_stats()
+    if stats_data is None:
+        raise RuntimeError('Error fetching EvoPPI statistics. Please, check network status')
+    
+    database_interactomes_count = stats_data.get('databaseInteractomesCount', 0)
+
+    interactomes_map = create_interactomes_map(database_interactomes_count, 'database')
+
+    if not interactomes_map:
+        raise RuntimeError('Error fetching EvoPPI interactomes. Please, check network status')
+
+    predictomes_count = stats_data.get('predictomesCount', 0)
+
+    predictomes_map = create_interactomes_map(predictomes_count, 'predictome')
+
+    if not predictomes_map:
+        raise RuntimeError('Error fetching EvoPPI predictomes. Please, check network status')
+
+    species_map = create_species_map()
+
+    if not species_map:
+        raise RuntimeError('Error fetching EvoPPI species. Please, check network status')
+
+    return species_map, interactomes_map, predictomes_map
