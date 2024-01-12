@@ -1,12 +1,12 @@
 import json
 
-with open('maps/species_map.json', 'r') as file:
+with open('test/data/species_map.json', 'r', encoding='utf-8') as file:
     species_map = json.load(file)
 
-with open('maps/interactomes_map.json', 'r') as file:
+with open('test/data/interactomes_map.json', 'r', encoding='utf-8') as file:
     interactomes_map = json.load(file)
 
-with open('maps/predictomes_map.json', 'r') as file:
+with open('test/data/predictomes_map.json', 'r', encoding='utf-8') as file:
     predictomes_map = json.load(file)
 
 input_species = 'Homo sapiens'
