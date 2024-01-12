@@ -79,6 +79,9 @@ def write_interactions_to_csv(csv_columns: List, rows: List, csv_file_path: str)
             writer.writerow(row_data)
 
 def json_results_to_csv(evoppi_responses: List, output_format: Format, output_path: str):
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
     interactions = []
     interactomes = evoppi_responses[0]['interactomes']
 
@@ -87,11 +90,9 @@ def json_results_to_csv(evoppi_responses: List, output_format: Format, output_pa
 
     if output_format is Format.SINGLE:
         columns, rows = json_results_to_csv_simple(interactions, interactomes)
-        write_interactions_to_csv(columns, rows, output_path)
+        write_interactions_to_csv(columns, rows, f'{output_path}/EvoPPI_Results.csv')
     elif output_format is Format.MULTIPLE:
         datasets_multiple = json_results_to_csv_multiple(interactions, interactomes)
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
 
         for columns, rows in datasets_multiple:
             interactome_file_name = str(columns[len(columns)-1]).replace(' ', '_')

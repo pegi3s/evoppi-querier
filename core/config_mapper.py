@@ -16,6 +16,9 @@ class SameSpeciesConfigMapper:
         self.predictomes_mapping = predictomes_mapping
         self.species_id = self.find_species_id()
 
+    def get_config(self) -> SameSpeciesConfigLoader:
+        return self.config
+
     def find_species_id(self) -> str:
         species = self.config.get_species()
         if species in self.species_mapping:
