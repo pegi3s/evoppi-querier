@@ -1,0 +1,34 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "IMAGE_NAME": "pegi3s/evoppi-querier"
+        }
+    },
+    "tasks": [
+        {
+            "label": "tests",
+            "type": "shell",
+            "command": "export PYTHONPATH=. && source .venv/bin/activate && python3 -m unittest discover -v -s test"
+        },
+        {
+            "label": "download test data mappings",
+            "type": "shell",
+            "command": "export PYTHONPATH=. && source .venv/bin/activate && python3 scripts/create_maps.py"
+        },
+        {
+            "label": "build docker",
+            "type": "shell",
+            "command": "CURRENT_VERSION=$(cat current.version) && docker build ./ -t ${IMAGE_NAME}:${CURRENT_VERSION} --build-arg version=${CURRENT_VERSION} && docker tag ${IMAGE_NAME}:${CURRENT_VERSION} ${IMAGE_NAME}:latest",
+            "problemMatcher": []
+        },
+        {
+            "label": "run docker test",
+            "type": "shell",
+            "command": "CURRENT_VERSION=$(cat current.version) && docker run --rm -v $(pwd):/data -v /tmp:/tmp ${IMAGE_NAME}:${CURRENT_VERSION} query_single_species -c /data/test/config.txt -o /tmp/single_species_$(uuidgen)",
+            "problemMatcher": []
+        }
+    ]
+}
