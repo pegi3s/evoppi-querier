@@ -50,14 +50,17 @@ class SameSpeciesConfigLoader:
 
         return config
     
-    def get_species(self) -> str:
-        if SameSpeciesConfigLoader.SPECIES in self.config:
-            return self.config[SameSpeciesConfigLoader.SPECIES]
+    def get_key(self, key) -> str:
+        if key in self.config:
+            return self.config[key]
         
-        raise ValueError(f'{SameSpeciesConfigLoader.SPECIES} not found')
+        raise ValueError(f'{key} not found')
+
+    def get_species(self) -> str:
+        return self.get_key(SameSpeciesConfigLoader.SPECIES)
     
     def get_gene_id(self) -> str:
-        return self.config[SameSpeciesConfigLoader.GENE_ID]
+        return self.get_key(SameSpeciesConfigLoader.GENE_ID)
     
     def get_interactions_level(self) -> str:
         return self.config[SameSpeciesConfigLoader.INT_LEVEL]

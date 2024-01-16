@@ -15,6 +15,7 @@ class SameSpeciesConfigMapper:
         self.interactomes_mapping = interactomes_mapping
         self.predictomes_mapping = predictomes_mapping
         self.species_id = self.find_species_id()
+        self.query_params = self._get_evoppi_query_params()
 
     def get_config(self) -> SameSpeciesConfigLoader:
         return self.config
@@ -45,7 +46,7 @@ class SameSpeciesConfigMapper:
 
         return toret
 
-    def get_evoppi_query_params(self):
+    def _get_evoppi_query_params(self):
         query_params = [
             ('gene', self.config.get_gene_id()),
             ('maxDegree', str(self.config.get_interactions_level()))
@@ -59,3 +60,6 @@ class SameSpeciesConfigMapper:
         )
         
         return query_params
+    
+    def get_evoppi_query_params(self):
+        return self.query_params

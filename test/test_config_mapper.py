@@ -40,11 +40,16 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
 
         self.assertListEqual(self.EXPECTED_QUERY_PARAMS, config_mapper.get_evoppi_query_params())
     
-    def test_map_config_missing_species(self):
-        file_path = 'test/config_missing_species.txt'
+    def run_missing(self, file_path, exception_message):
         config_loader = SameSpeciesConfigLoader(file_path)
 
         species_map, interactomes_map, predictomes_map = self.load_test_maps()
 
-        with self.assertRaisesRegex(ValueError, r'Species not found'):
+        with self.assertRaisesRegex(ValueError, exception_message):
             SameSpeciesConfigMapper(config_loader, species_map, interactomes_map, predictomes_map)
+
+    def test_map_config_missing_species(self):
+        self.run_missing('test/config_missing_species.txt', r'Species not found')
+    
+    def test_map_config_missing_geneid(self):
+        self.run_missing('test/config_missing_geneid.txt', r'GeneID not found')
