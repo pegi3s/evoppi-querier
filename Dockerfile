@@ -11,8 +11,12 @@ ENV VERSION=${version}
 
 ADD core evoppi-interactomes/core
 ADD query_single_species evoppi-interactomes/query_single_species
+ADD list_species evoppi-interactomes/list_species
+ADD list_species evoppi-interactomes/list_interactomes
 
-RUN chmod u+x evoppi-interactomes/query_single_species && \
-    sed -i 's#/usr/bin/#usr/local/bin/#g' evoppi-interactomes/query_single_species
+RUN chmod u+x evoppi-interactomes/* && \
+    sed -i 's#/usr/bin/#usr/local/bin/#g' evoppi-interactomes/query_single_species && \
+    sed -i 's#/usr/bin/#usr/local/bin/#g' evoppi-interactomes/list_species && \
+    sed -i 's#/usr/bin/#usr/local/bin/#g' evoppi-interactomes/list_interactomes
 
 ENV PATH=/evoppi-interactomes:${PATH}

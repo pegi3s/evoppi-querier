@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+
+import click
+import sys
+
+from core.rest_query import create_interactomes_map, create_species_map, get_stats
+
+def list_interactomes(species, count_key, interactome_type):
+    species_map = create_species_map()
+
+    if not species in species_map:
+        click.echo(f'Invalid species "{species}"', color='red', err=True)
+        sys.exit(1)
+
+    stats_data = get_stats()
+
+    database_interactomes_count = stats_data.get(count_key, 0)
+
+    interactomes_map = create_interactomes_map(database_interactomes_count, interactome_type)
+
+    species_interactomes = interactomes_map[species_map[species]]
+
+    print(f"name\tcollection")
+    for key in species_interactomes:
+        data = species_interactomes[key]
+        print(f"{key}\t{data['interactomeCollection']}")
+
+@click.command()
+@click.option('--species', '-s', required=True, help='Species')
+@click.option('-dt', '--data-type', required=True, type=click.Choice(['interactome', 'predictome']), help='The type of interactomes to list (interactome or predictome)')
+def process_data(species, data_type):
+    if data_type == 'interactome':
+        list_interactomes(species, 'databaseInteractomesCount', 'database')
+    else:
+        list_interactomes(species, 'predictomesCount', 'predictome')
+
+if __name__ == '__main__':
+    process_data()
