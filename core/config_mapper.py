@@ -39,7 +39,7 @@ class SameSpeciesConfigMapper:
             if interactome in species_interactomes:
                 toret.append((
                     'interactome',
-                    species_interactomes[interactome]
+                    species_interactomes[interactome]['id']
                 ))
             else:
                 raise ValueError(f'Invalid interactome name ({interactome}). No interactome found for the specified species ({self.config.get_species()}).')

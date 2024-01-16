@@ -1,10 +1,8 @@
 import json
-import requests
 import time
+import requests
 
-from core.config import SameSpeciesConfigLoader, Format
 from core.config_mapper import SameSpeciesConfigMapper
-from core.results_parser import json_results_to_csv
 
 URL_API_BASE = 'http://evoppi.i3s.up.pt/evoppi-backend/rest/api'
 URL_API_INTERACTIONS = f'{URL_API_BASE}/interaction'
@@ -44,7 +42,11 @@ def create_interactomes_map(database_interactomes_count, interactome_type='datab
                     if not species_id in interactomes_map:
                         interactomes_map[species_id] = {}
 
-                    interactomes_map[species_id][interactome['name']] = str(interactome['id'])
+                    interactomes_map[species_id][interactome['name']] = {
+                        'interactomeType': interactome['interactomeType'],
+                        'interactomeCollection': interactome['interactomeCollection'],
+                        'id': str(interactome['id'])
+                    }
             else:
                 raise RuntimeError(f'Error: {response.status_code} - {response.text}')
 
@@ -77,7 +79,7 @@ def get_all_maps():
     
     database_interactomes_count = stats_data.get('databaseInteractomesCount', 0)
     interactomes_map = create_interactomes_map(database_interactomes_count, 'database')
-
+    
     predictomes_count = stats_data.get('predictomesCount', 0)
     predictomes_map = create_interactomes_map(predictomes_count, 'predictome')
 
