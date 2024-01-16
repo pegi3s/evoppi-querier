@@ -18,10 +18,7 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
         ('interactome', '1223')
     ]
 
-    def test_map_config(self):
-        file_path = 'test/config.txt'
-        config_loader = SameSpeciesConfigLoader(file_path)
-
+    def load_test_maps(self):
         with open('test/data/species_map.json', 'r', encoding='utf-8') as file:
             species_map = json.load(file)
 
@@ -31,8 +28,23 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
         with open('test/data/predictomes_map.json', 'r', encoding='utf-8') as file:
             predictomes_map = json.load(file)
 
+        return species_map, interactomes_map, predictomes_map
+
+    def test_map_config(self):
+        file_path = 'test/config.txt'
+        config_loader = SameSpeciesConfigLoader(file_path)
+
+        species_map, interactomes_map, predictomes_map = self.load_test_maps()
+
         config_mapper = SameSpeciesConfigMapper(config_loader, species_map, interactomes_map, predictomes_map)
 
         self.assertListEqual(self.EXPECTED_QUERY_PARAMS, config_mapper.get_evoppi_query_params())
-        
+    
+    def test_map_config_missing_species(self):
+        file_path = 'test/config_missing_species.txt'
+        config_loader = SameSpeciesConfigLoader(file_path)
 
+        species_map, interactomes_map, predictomes_map = self.load_test_maps()
+
+        with self.assertRaisesRegex(ValueError, r'Species not found'):
+            SameSpeciesConfigMapper(config_loader, species_map, interactomes_map, predictomes_map)
