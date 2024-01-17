@@ -19,6 +19,14 @@ class SameSpeciesConfigLoader:
 
     def __init__(self, file_path):
         self.config = self.load_config(file_path)
+        self.check_keys()
+    
+    def check_keys(self):
+        keys = [self.SPECIES, self.GENE_ID, self.INT_LEVEL, self.FORMAT]
+
+        for key in keys:
+            if not key in self.config:
+                raise ValueError(f'{key} not found')
 
     def load_config(self, file_path):
         config = {}
