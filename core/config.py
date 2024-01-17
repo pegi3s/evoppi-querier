@@ -22,7 +22,11 @@ class SameSpeciesConfigLoader:
         self.check_keys()
     
     def check_keys(self):
-        keys = [self.SPECIES, self.GENE_ID, self.INT_LEVEL, self.FORMAT]
+        keys = [
+            self.SPECIES, self.GENE_ID, self.INT_LEVEL, self.FORMAT, 
+            self.INTERACTOME_DATABASES, self.INTERACTOME_MODIFIERS_22, self.INTERACTOME_POLYQ_22,
+            self.PREDICTOME_DATABASES, self.PREDICTOME_MODIFIERS_22, self.PREDICTOME_POLYQ_22
+        ]
 
         for key in keys:
             if not key in self.config:

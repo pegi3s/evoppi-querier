@@ -1,10 +1,8 @@
-# Mandatory parameters
 Species=Homo sapiens
 GeneID=411
 Int_level=1
 Format=single
 
-# Interactome names
 Interactome.Databases=
 Interactome.Modifiers_22=
 Interactome.polyQ_22=

@@ -1,12 +1,9 @@
-# Mandatory parameters
 Species=Homo sapiens
 GeneID=411
 Int_level=1
 Format=single
 
-# Interactome names
 Interactome.Databases=BioGRID; HIPPIE
-Interactome.Modifiers_22=Homo sapiens (Modifiers_22)
 Interactome.polyQ_22=Homo sapiens (PolyQ_22)
 Predictome.Databases=Based on Drosophila melanogaster BioGRID (DIOPT); Based on Drosophila melanogaster BioGRID (ENSEMBL)
 Predictome.Modifiers_22=

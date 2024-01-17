@@ -31,7 +31,7 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
         return species_map, interactomes_map, predictomes_map
 
     def test_map_config(self):
-        file_path = 'test/config.txt'
+        file_path = 'test/config/config.txt'
         config_loader = SameSpeciesConfigLoader(file_path)
 
         species_map, interactomes_map, predictomes_map = self.load_test_maps()
@@ -41,7 +41,7 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
         self.assertListEqual(self.EXPECTED_QUERY_PARAMS, config_mapper.get_evoppi_query_params())
     
     def test_map_config_missing_interactomes(self):
-        file_path = 'test/config_zero_interactomes.txt'
+        file_path = 'test/config/config_zero_interactomes.txt'
         config_loader = SameSpeciesConfigLoader(file_path)
 
         species_map, interactomes_map, predictomes_map = self.load_test_maps()
