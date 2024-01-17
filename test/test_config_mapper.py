@@ -53,3 +53,9 @@ class TestSameSpeciesConfigMapper(unittest.TestCase):
     
     def test_map_config_missing_geneid(self):
         self.run_missing('test/config_missing_geneid.txt', r'GeneID not found')
+
+    def test_map_config_missing_int_level(self):
+        self.run_missing('test/config_missing_int_level.txt', r'Int_level not found')
+    
+    def test_map_config_missing_interactomes(self):
+        self.run_missing('test/config_zero_interactomes.txt', r'There should be at least one interactome or predictome')

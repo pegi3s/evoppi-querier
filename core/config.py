@@ -63,7 +63,7 @@ class SameSpeciesConfigLoader:
         return self.get_key(SameSpeciesConfigLoader.GENE_ID)
     
     def get_interactions_level(self) -> str:
-        return self.config[SameSpeciesConfigLoader.INT_LEVEL]
+        return self.get_key(SameSpeciesConfigLoader.INT_LEVEL)
     
     def get_format(self) -> Format:
         return self.config[SameSpeciesConfigLoader.FORMAT]

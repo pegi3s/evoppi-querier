@@ -52,12 +52,18 @@ class SameSpeciesConfigMapper:
             ('maxDegree', str(self.config.get_interactions_level()))
         ]
 
-        query_params.extend(
+        interactomes = []
+        interactomes.extend(
             self.get_interactome_id_params(self.interactomes_mapping, self.config.get_interactomes()),
         )
-        query_params.extend(
+        interactomes.extend(
             self.get_interactome_id_params(self.predictomes_mapping, self.config.get_predictomes())
         )
+
+        if len(interactomes) == 0:
+            raise ValueError('There should be at least one interactome or predictome')
+        else:
+            query_params.extend(interactomes)
         
         return query_params
     
