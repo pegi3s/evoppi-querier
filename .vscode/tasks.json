@@ -29,6 +29,24 @@
             "type": "shell",
             "command": "CURRENT_VERSION=$(cat current.version) && docker run --rm -v $(pwd):/data -v /tmp:/tmp ${IMAGE_NAME}:${CURRENT_VERSION} query_single_species -c /data/test/config.txt -o /tmp/single_species_$(uuidgen)",
             "problemMatcher": []
+        },
+        {
+            "label": "list species",
+            "type": "shell",
+            "command": "CURRENT_VERSION=$(cat current.version) && docker run --rm ${IMAGE_NAME}:${CURRENT_VERSION} list_species",
+            "problemMatcher": []
+        },
+        {
+            "label": "list interactomes",
+            "type": "shell",
+            "command": "python3 list_interactomes --species \"Homo sapiens\" -dt interactome",
+            "problemMatcher": []
+        },
+        {
+            "label": "list interactomes [docker]",
+            "type": "shell",
+            "command": "CURRENT_VERSION=$(cat current.version) && docker run --rm ${IMAGE_NAME}:${CURRENT_VERSION} list_interactomes --species \"Homo sapiens\" -dt interactome",
+            "problemMatcher": []
         }
     ]
 }
