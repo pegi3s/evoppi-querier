@@ -55,6 +55,10 @@ The result will be available in the new `output_dir` directory created at your c
 
 The `latest` tag contains always the most recent version.
 
-## [1.0.0] - 22/01/2023
+## [1.0.1] - 24/01/2024
+
+- Fixes a bug when retrieving query results that caused the first ten interactions were missing.
+
+## [1.0.0] - 22/01/2024
 
 - Initial `pegi3s/evoppi-querier` version containing the `query_single_species` script.

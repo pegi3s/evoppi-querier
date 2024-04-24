@@ -104,10 +104,10 @@ def extract_result_reference(json_response):
 
 def process_completed(response_json, result_reference_url):
     total_interactions = response_json.get('totalInteractions', 0)
-
     responses = []
-    for page in range(1, (total_interactions // 10) + 1):
+    for page in range(0, (total_interactions // 10) + 1):
         page_url = f'{result_reference_url}?page={page}&pageSize=10'
+
         page_response = send_get_request(page_url)
         responses.append(page_response)
 

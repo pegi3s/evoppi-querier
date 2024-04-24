@@ -31,6 +31,12 @@
             "problemMatcher": []
         },
         {
+            "label": "run docker e2e test",
+            "type": "shell",
+            "command": "CURRENT_VERSION=$(cat current.version) && ./test/e2e/test.sh ${IMAGE_NAME} ${CURRENT_VERSION}",
+            "problemMatcher": []
+        },
+        {
             "label": "list species",
             "type": "shell",
             "command": "CURRENT_VERSION=$(cat current.version) && docker run --rm ${IMAGE_NAME}:${CURRENT_VERSION} list_species",
